@@ -1,9 +1,43 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>addcompany</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{company.companyName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form #companyForm="ngForm" (ngSubmit)="onSubmit(companyForm)">
+    <ion-list>
+      <!-- company name-->
+      <ion-item>
+        <ion-label position="stacked">Company Name</ion-label>
+        <ion-input type="text" required [(ngModel)]="company.companyName" name="companyName" #companyName="ngModel">
+        </ion-input>
+      </ion-item>
+      <!-- headquater-->
+      <ion-item>
+        <ion-label position="stacked">Headquater</ion-label>
+        <ion-input type="text" required [(ngModel)]="company.headquater" name="headquater" #headquater="ngModel">
+        </ion-input>
+      </ion-item>
+      <!-- ceo-->
+      <ion-item>
+        <ion-label position="stacked">CEO</ion-label>
+        <ion-input type="text" required [(ngModel)]="company.ceo" name="ceo" #ceo="ngModel">
+        </ion-input>
+      </ion-item>
+      <!-- headcount-->
+      <ion-item>
+        <ion-label position="stacked">Headcount</ion-label>
+        <ion-input type="text" required [(ngModel)]="company.headcount" name="headcount" #headcount="ngModel">
+        </ion-input>
+      </ion-item>
+    </ion-list>
 
+    <ion-button fill="solid" color="primary" expand="block" [disabled]="!companyForm.valid" type="submit" mode="ios">Proceed
+    </ion-button>
+
+  </form>
 </ion-content>

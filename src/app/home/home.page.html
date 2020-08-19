@@ -5,15 +5,15 @@
     </ion-title>
 
     <ion-buttons slot="primary">
-      <ion-button fill="solid" color="danger" [hidden]="!networkStatus.ONLINE === false">Offline</ion-button>
-      <ion-button fill="solid" color="success" [hidden]="!networkStatus.ONLINE === true">Online</ion-button>
+      <ion-button fill="solid" color="danger" [hidden]="!networkStatus.ONLINE === false" shape="circle"></ion-button>
+      <ion-button fill="solid" color="success" [hidden]="!networkStatus.ONLINE === true"></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ion-item *ngFor=" let company of companies" [routerLink]="['/','addcompany',company.id]">
+  <ion-item *ngFor=" let company of companies">
     <ion-label>
       <strong>
         <h1> {{company.companyName}} </h1>
@@ -22,6 +22,11 @@
       <p> {{company.headcount}} </p>
       <p> {{company.ceo}} </p>
     </ion-label>
+
+    <ion-buttons slot="">
+      <ion-button color="success" fill="solid" [routerLink]="['/','addcompany',company.id]">Update</ion-button>
+      <ion-button color="light" fill="solid" (click)="onDelete(company.id)">Delete</ion-button>
+    </ion-buttons>
   </ion-item>
 
 </ion-content>

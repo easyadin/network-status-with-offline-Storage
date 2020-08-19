@@ -5,13 +5,14 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-  constructor(private ngZone: NgZone, private platform: Platform, private sqlite: SQLite, private sqlPortal: SQLitePorter, private http: HttpClient) {
+  constructor(private router: Router, private ngZone: NgZone, private platform: Platform, private sqlite: SQLite, private sqlPortal: SQLitePorter, private http: HttpClient) {
     // CREATE SQL DATABASE
     // check if platform is ready
     this.platform.ready().then((state) => {
@@ -100,7 +101,7 @@ export class DatabaseService {
 
         return {
           id: data.rows.item(0).id,
-          companyName: data.rows.item(0).name,
+          companyName: data.rows.item(0).companyName,
           headquater: data.rows.item(0).headquater,
           ceo: data.rows.item(0).ceo,
           headcount: data.rows.item(0).headcount,
@@ -121,6 +122,9 @@ export class DatabaseService {
     return this.database.executeSql(`UPDATE company SET companyName = ? , headquater = ? , ceo = ? , headcount = ? WHERE id = ${company.id}`, data)
       .then(() => {
         this.fetchCompanies();
+
+        // back to list
+        this.router.navigateByUrl('/home')
       })
   }
 }

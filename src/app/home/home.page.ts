@@ -63,6 +63,10 @@ export class HomePage implements OnInit, OnDestroy {
     )
   }
 
+  onDelete(id) {
+    this.databaseService.deleteCompany(id);
+  }
+
   ngOnDestroy(): void {
     this.networkChangeSub.unsubscribe()
   }

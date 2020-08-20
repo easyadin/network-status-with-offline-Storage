@@ -1,5 +1,5 @@
-import { Company } from './../models/company';
-import { Platform } from '@ionic/angular';
+import { Company, newCompany } from './../models/company';
+import { Platform, ToastController } from '@ionic/angular';
 import { Injectable, NgZone } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
@@ -7,12 +7,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-  constructor(private router: Router, private ngZone: NgZone, private platform: Platform, private sqlite: SQLite, private sqlPortal: SQLitePorter, private http: HttpClient) {
+  constructor(private toast: ToastController, private router: Router, private ngZone: NgZone, private platform: Platform, private sqlite: SQLite, private sqlPortal: SQLitePorter, private http: HttpClient) {
     // CREATE SQL DATABASE
     // check if platform is ready
     this.platform.ready().then((state) => {
@@ -33,13 +32,12 @@ export class DatabaseService {
   // create sql database object
   private database: SQLiteObject;
   // monitor database ready
-  private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false) // initial state  = false
+  private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false) // initial db state  = false
   // company table
-  company = new BehaviorSubject([]);
+  company = new BehaviorSubject([]); // hold an empty array which is the current state
 
   seedDatabase() {
     // connect to database
-    //offlinestorage\src\app\Queries\seed.sql
     this.http.get('assets/seed.sql', { responseType: 'text' })
       .subscribe(sql => {
         this.sqlPortal.importSqlToDb(this.database, sql)
@@ -85,11 +83,12 @@ export class DatabaseService {
   }
 
   // add company 
-  addCompany(company: Company) {
+  addCompany(company: newCompany) {
     let data = [company.companyName, company.headquater, company.ceo, company.headcount];
     return this.database.executeSql('INSERT INTO company (companyName, headquater, ceo, headcount) VALUES (?,?,?,?)', data)
       .then(data => {
         this.fetchCompanies(); //  re fetch all data from db
+        this.presentConfirmation(`${company.companyName} added successfully`)
       })
   }
 
@@ -126,5 +125,13 @@ export class DatabaseService {
         // back to list
         this.router.navigateByUrl('/home')
       })
+  }
+
+  async presentConfirmation(message, duration?) {
+    const toast = await this.toast.create({
+      message: message,
+      duration: duration || 1500
+    })
+    toast.present()
   }
 }

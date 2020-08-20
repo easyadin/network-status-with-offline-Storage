@@ -5,3 +5,9 @@ export interface Company {
     ceo: string,
     headcount: number
 }
+export interface newCompany {
+    companyName: string,
+    headquater: string,
+    ceo: string,
+    headcount: number
+}

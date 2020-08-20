@@ -7,6 +7,8 @@
     <ion-buttons slot="primary">
       <ion-button fill="solid" color="danger" [hidden]="!networkStatus.ONLINE === false" shape="circle"></ion-button>
       <ion-button fill="solid" color="success" [hidden]="!networkStatus.ONLINE === true"></ion-button>
+    
+      <ion-button fill="solid" color="dark" routerLink="/addcompany">Add Company</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

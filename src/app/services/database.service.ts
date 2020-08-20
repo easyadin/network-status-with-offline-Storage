@@ -96,8 +96,6 @@ export class DatabaseService {
   getCompany(id): Promise<Company> {
     return this.database.executeSql('SELECT * FROM company WHERE id = ?', [id])
       .then(data => {
-        let allCompanies: Company[] = [];
-
         return {
           id: data.rows.item(0).id,
           companyName: data.rows.item(0).companyName,

@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'companylist',
     pathMatch: 'full'
   },
   {
@@ -23,6 +23,14 @@ const routes: Routes = [
         loadChildren: () => import('./addcompany/addcompany.module').then(m => m.AddcompanyPageModule)
       }
     ]
+  },
+  {
+    path: 'createcompany',
+    loadChildren: () => import('./createcompany/createcompany.module').then(m => m.CreatecompanyPageModule)
+  },
+  {
+    path: 'companylist',
+    loadChildren: () => import('./companylist/companylist.module').then(m => m.CompanylistPageModule)
   },
 ];
 
